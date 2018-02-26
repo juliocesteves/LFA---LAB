@@ -5,6 +5,7 @@
  */
 package aula01;
 
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,7 +21,7 @@ public class Aula01 {
         // TODO code application logic here
         String palavra = JOptionPane.showInputDialog("Digite a Palavra");
 
-        if (ValidaEx2(palavra)) {
+        if (ValidaEx1(palavra)) {
             System.out.println("Palavra Existe");
         } else {
             System.out.println("Palavra Não Existe");
@@ -28,12 +29,49 @@ public class Aula01 {
     }
 
     public static boolean ValidaEx1(String input) {
+        String S = "AA";
+        String aux = "";
         int countA, countB;
+        int troca = 0, insertAfter = 0;
+        boolean valida = false;
+        int tam = input.length();
+        
+        while(S.length() <= tam - 1) {
+            //S = S.replace("A", "aB");
+            if (existeMaiuscula(S)) {
+                insertAfter++;
+                S = S.replaceFirst(Pattern.quote("A"), "aB");
+                troca++;
+                aux = validaExpressao(S, input, troca);
+                if (!aux.isEmpty()) {
+                    S = aux;
+                    insertAfter++;
+                    continue;
+                }
+                
+                troca = 0;
+                aux = "";
+                S = S.replace("aB", "Ba");
+                insertAfter++;
+                troca++;
+                aux = validaExpressao(S, input, troca);
+                if (!aux.isEmpty()) {
+                    S = aux;
+                    insertAfter++;
+                }
+            } else {
+                S = S + Character.toString(input.charAt(insertAfter));
+            }
+        }
+        
+        if (S.equals(input)){
+            valida = true;
+        }
+        
+        countA = S.length() - S.replace("a", "").length();
+        countB = S.length() - S.replace("b", "").length();
 
-        countA = input.length() - input.replace("a", "").length();
-        countB = input.length() - input.replace("b", "").length();
-
-        return (countA == 2 && countB >= 2);
+        return (valida && countA == 2 && countB >= 2);
     }
 
     public static boolean ValidaEx2(String input) {
@@ -80,4 +118,27 @@ public class Aula01 {
 
         return false;
     }
+    
+    public static String validaExpressao(String gramatica, String input, int troca) {
+        String aux = gramatica;
+        
+        aux = aux.replace("B", "b");
+        if (aux.equals(input) || aux.substring(0, troca+1).equals(input.substring(0, troca+1))) {
+            return aux;
+        } else {
+            aux = gramatica;
+            aux = aux.replace("B", "Ba");
+            
+        }
+        return "";
+    }
+    
+    private static boolean existeMaiuscula(String input) {
+        String aux = String.valueOf(input);
+        
+        boolean maiuscula = !aux.equals(aux.toLowerCase());
+        
+        return maiuscula;
+    }   
 }
+
