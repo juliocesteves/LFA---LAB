@@ -33,11 +33,16 @@ public class Aula01 {
         String aux = "";
         int countA, countB;
         int troca = 0, insertAfter = 0;
+        boolean continue_process = true;
         boolean valida = false;
         int tam = input.length();
         
         while(S.length() <= tam - 1) {
-            //S = S.replace("A", "aB");
+            if (!continue_process) {
+                valida = false;
+                break;
+            }
+            
             if (existeMaiuscula(S)) {
                 insertAfter++;
                 S = S.replaceFirst(Pattern.quote("A"), "aB");
@@ -46,7 +51,10 @@ public class Aula01 {
                 if (!aux.isEmpty()) {
                     S = aux;
                     insertAfter++;
+                    continue_process = true;
                     continue;
+                } else {
+                    continue_process = false;
                 }
                 
                 troca = 0;
@@ -57,10 +65,13 @@ public class Aula01 {
                 aux = validaExpressao(S, input, troca);
                 if (!aux.isEmpty()) {
                     S = aux;
+                    continue_process = true;
                     insertAfter++;
+                } else {
+                    continue_process = false;
                 }
             } else {
-                S = S + Character.toString(input.charAt(insertAfter));
+                S = S + Character.toString(input.charAt(insertAfter-1));
             }
         }
         
@@ -127,8 +138,12 @@ public class Aula01 {
             return aux;
         } else {
             aux = gramatica;
-            aux = aux.replace("B", "Ba");
-            
+            aux = aux.replace("B", "Bb");
+            aux = aux.replace("B", "b");
+            troca += 2;
+            if (aux.equals(input) || aux.substring(0, troca+1).equals(input.substring(0, troca+1))) {
+                return aux;
+            }
         }
         return "";
     }
