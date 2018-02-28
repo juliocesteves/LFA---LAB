@@ -19,9 +19,28 @@ public class Aula01 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        String palavra = JOptionPane.showInputDialog("Digite a Palavra");
+        String palavra = "";
+        int op = 0;
+        boolean retorno = false;
+        
+        op = Integer.parseInt(JOptionPane.showInputDialog(
+                        "Select the Option:\n1-Exercicio 1\n2-Exercicio 2"));
+        
+        switch(op) {
+            case 1:
+                palavra = JOptionPane.showInputDialog("Digite a Palavra");
+                retorno = ValidaEx1(palavra);
+                break;
+            case 2:
+                palavra = JOptionPane.showInputDialog("Digite a Palavra");
+                retorno = ValidaEx2(palavra);
+                break;
+            default:
+                System.out.println("Opção Inválida");
+                break;
+        }
 
-        if (ValidaEx1(palavra)) {
+        if(retorno) {
             System.out.println("Palavra Existe");
         } else {
             System.out.println("Palavra Não Existe");
